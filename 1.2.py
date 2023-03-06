@@ -1,24 +1,24 @@
 from Stoch import Stoch
-
+import numpy as np
 # Parameters
 # drift coefficent
 mu = 0.1
-# number of steps
-n_steps = 100
-# time in years
-years = 1
-# number of sims
-n_paths = 100
-# initial stock price
-S0 = 100
 # volatility
 sigma = 0.3
-dt=years/n_steps
+dt = 0.001
 
+n_steps = int(5/dt)
 
-def dWs(upper, dt, *, path=None):
-	if path is None:
-		path = Wiener(upper/dt, dt)
-	else:
-		pass
-	return sum((upper - np.arange(dt, upper+dt, dt)) * np.diff(path))
+# Create paths of wiener process
+paths = Stoch(dt, mu, sigma, n_steps, n_paths=1)
+Wiener_path = paths.Wiener_paths
+
+# Calculate increments of Wiener process
+dWs = np.diff(Wiener_path)
+
+# Multiply by the 5-tdt
+int_dWs = (5 - np.arange(dt, 5, dt)) * dWs
+
+# Sum to finish integrating
+S_int_dWs = int_dWs.sum(axis=1)
+
