@@ -20,6 +20,12 @@ WT_min_t = np.flip(Wt, 1)
 # calculate X(t)
 Xt = Wt - (t_div_T * WT_min_t)
 
+
+# calculate the variance of X(t) as defined in the exercise
+Var_Xt = np.var(Xt)
+
+
+
 # plot results
 plt.plot(time, Xt[0])
 plt.show()
