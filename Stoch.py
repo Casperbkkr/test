@@ -13,11 +13,15 @@ class Stoch:
 		self.years = years
 		self.Random_walk_paths = self._Random_walk(dt, n_steps, n_paths=n_paths, seed=seed)
 		self.GBM_paths = self._GBM(dt, mu, sigma, n_paths=n_paths, seed=seed, S0=S0)
+		self.Wiener_paths = self._Wiener(dt, n_steps, n_paths=n_paths, seed=seed)
 
 	def _Random_walk(self, dt, n_steps, *, n_paths=1, seed=None):
 		if seed is not None:
 			np.random.seed(seed)
 		return np.random.normal(0.0, np.sqrt(dt), [n_paths, n_steps])
+
+	def _Wiener(self, dt, n_steps, *, n_paths, seed=None):
+		return self.Random_walk_paths.cumsum(axis=1)
 
 	def _GBM(self, dt, mu, sigma, *, n_paths=1, seed=None, S0=100):
 		St = (mu - sigma ** 2 / 2) * dt + sigma * self.Random_walk_paths
