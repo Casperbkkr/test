@@ -1,6 +1,6 @@
 import pandas as pd
 from pathlib import Path
-print("new branch:")
+
 
 def calc_daily_returns(df_data):
 	new_col = df_data['Close'] - df_data['Open']
