@@ -43,7 +43,7 @@ class Stoch:
 		plt.xlabel("Years $(t)$")
 		plt.ylabel("Stock Price $(S_t)$")
 		plt.title(
-		"Realizations of Geometric Brownian Motion\n $dS_t = \mu S_t dt + \sigma S_t dW_t$\n $S_0 = {0}, \mu = {1}, \sigma = {2}$".format(self.S0, self.mu, self.sigma)
+		"$dS_t = \mu S_t dt + \sigma S_t dW_t$\n $S_0 = {0}, \mu = {1}, \sigma = {2}$".format(self.S0, self.mu, self.sigma)
 		)
 		plt.show()
 
