@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Stoch:
-	def __init__(self, dt, mu, sigma, n_steps, *, years=1, n_paths=1, seed=None, S0=100):
+	def __init__(self, dt: float, mu: float, sigma: float, n_steps: int, *, years: int = 1, n_paths: int = 1, seed=None, S0: float = 100):
 		self.dt = dt
 		self.mu = mu
 		self.sigma = sigma
@@ -15,29 +15,33 @@ class Stoch:
 		self.GBM_paths = self._GBM(dt, mu, sigma, n_paths=n_paths, seed=seed, S0=S0)
 		self.Wiener_paths = self._Wiener(n_paths)
 
-	def _Random_walk(self, dt, n_steps, *, n_paths=1, seed=None):
-		if seed is not None:
+	def _Random_walk(self, dt: float, n_steps: int, *, n_paths: int = 1, seed=None) -> np.array:
+
+		if seed is not None: # set seed for numpy if seed is given
 			np.random.seed(seed)
-		return np.random.normal(0.0, np.sqrt(dt), [n_paths, n_steps])
+		return np.random.normal(0.0, np.sqrt(dt), [n_paths, n_steps])  # returns numpy array with random samples from N(0,sqrt(dt))
 
-	def _Wiener(self, n_paths):
-		zeros = np.zeros((n_paths, 1))
-		return np.concatenate((zeros, self.Random_walk_paths.cumsum(axis=1)), axis=1)
+	def _Wiener(self, n_paths: int) -> np.array:
+		zeros = np.zeros((n_paths, 1)) # add zero as X0
+		return np.concatenate((zeros, self.Random_walk_paths.cumsum(axis=1)), axis=1)  # return array with cumulative sum of random walk
 
-	def _GBM(self, dt, mu, sigma, *, n_paths=1, seed=None, S0=100):
+	def _GBM(self, dt: int, mu: float, sigma: float, *, n_paths: int = 1, seed=None, S0: float = 100) -> np.array:
+		# calculate brownian motion
 		St = (mu - sigma ** 2 / 2) * dt + sigma * self.Random_walk_paths
+		# take exponent of S(t) and transpose array
 		expSt = (np.exp(St)).T
+		# start gbm at one
 		expStplus = np.vstack([np.ones(n_paths), expSt])
+		# multiply by S(0) and take the cumulative product
 		gbm_paths = S0 * expStplus.cumprod(axis=0)
-		return gbm_paths
+		return gbm_paths  # return array with geometric brownian motion paths
 
-	def show_paths(self):
+	def show_paths(self) -> None:
 
 		# Define time interval correctly
 		time = np.linspace(0, self.years, self.n_steps+1)
 		# Require numpy array that is the same shape as St
 		tt = np.full(shape=(self.n_paths, self.n_steps+1), fill_value=time).T
-
 
 		plt.plot(tt, self.GBM_paths)
 		plt.xlabel("Years $(t)$")
