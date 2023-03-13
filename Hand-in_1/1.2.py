@@ -1,6 +1,6 @@
 from Stoch import Stoch
 import numpy as np
-# Parameters
+# Parameter
 # Drift coefficent
 mu = 0.1
 # Volatility
