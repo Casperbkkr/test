@@ -1,12 +1,14 @@
 from Stoch import Stoch
 import numpy as np
-# Parameter
-# Drift coefficent
+
+# Parameters
+# Drift coefficient
 mu = 0.1
 # Volatility
 sigma = 0.3
 # dt
-dt = 0.000001
+dt = 0.00001
+
 
 n_steps = int(5/dt)
 if n_steps % 5 != 0:  # make sure that steps are correct amount
