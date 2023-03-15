@@ -1,6 +1,5 @@
 import pandas as pd
-from pathlib import Path
-
+import matplotlib.pyplot as plt
 
 
 def calc_daily_returns(df_data):
@@ -13,27 +12,20 @@ def calc_RSSI(df_data):
 	return
 
 
+df = pd.read_csv("daily_returns.csv")
+df = df.sort_values(by=["Date"])
+df.reset_index(inplace=True)
+df.drop(columns=["index"], inplace=True)
 
-'''
-sheet = pd.read_csv('daily_returns.csv')
+date = df["Date"].tolist()
+stock1 = df["CSCO"].tolist()
+stock2 = df["TRNS"].tolist()
 
-folder = "/Users/casperbakker/Documents/PycharmProjects/Modelling_biosystems/Computational_Finance/stock_market_data" \
-         "/nasdaq/csv"
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
 
-df_output = pd.DataFrame()  # make empty output Dataframe
-i = 0
+ax1.scatter(date[0:600], stock1[0:600], s=1, c='b', marker="s", label='first')
+ax1.scatter(date[0:600], stock2[0:600], s=1, c='r', marker="o", label='second')
+plt.legend(loc='upper left')
+plt.show()
 
-
-for file in Path(folder).glob('*.csv'): # loop through all files in data
-	stock_csv = str(file).split("/")[-1]  # get last part of file path
-	stock_name = stock_csv.split(".")[0]  # get stock name without .csv extension
-	print(i)
-	df_stock = pd.read_csv(file)
-	df_stock.set_index('Date', inplace=True)
-	df_daily_returns = pd.DataFrame()
-	df_daily_returns[stock_name] = calc_daily_returns(df_stock)
-	df_output =  pd.concat([df_output, df_daily_returns], axis=1)
-	if i == 1000:
-		df_output.to_csv("daily_returns.csv")
-		break
-'''
