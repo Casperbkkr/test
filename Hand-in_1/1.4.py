@@ -26,13 +26,18 @@ Xt = Wt - (t_div_T * WT_min_t)
 # calculate the variance of X(t) for all times t as defined in the exercise
 Var_Xt = np.var(Xt, axis=0)
 
-# calculate var(W(t)), (t/T)var(T-t), cov(W(t),(t/T)W(T-t)) for all times t
-Var_Wt = np.var(Wt, axis=0)
-Var_tWT_min_t = np.var(t_div_T_WT_min_t, axis=0)
-Cov_Wt = 1
+# calculate the analytically found identity for the variance
+Cov_Wt = np.fmin(time, 10-time)
+cov_analytic = time + (np.square(time)/100)*(T-time) - (time/5)*Cov_Wt
 
-# calculate the analytically found identity for the variance.
 
-# plot results
-plt.plot(time, Var_Xt)
+# calculate error
+error = abs(cov_analytic - Var_Xt)
+
+
+fig, axs = plt.subplots(2)
+fig.suptitle('Absolute error vs time')
+axs[0].plot(time, cov_analytic)
+axs[0].plot(time, Var_Xt)
+axs[1].plot(time, error)
 plt.show()
