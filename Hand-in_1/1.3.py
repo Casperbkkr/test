@@ -14,6 +14,7 @@ n_paths = 100
 mu1 = 0.04
 sigma1 = 0.38
 X0 = 0.21
+mu1 = 0.06
 # make paths for Y(t)
 Xt = Stoch(dt, mu1, sigma1, n_steps, years=1, S0=X0, n_paths=n_paths)
 X_GBM_paths = Xt.GBM_paths
@@ -22,6 +23,9 @@ X_GBM_paths = Xt.GBM_paths
 mu2 = 0.1
 sigma2 = 0.15
 Y0 = 0.7
+mu2 = 0.06
+sigma2 = sigma1
+
 # make paths for X(t)
 Yt = Stoch(dt, mu2, sigma2, n_steps, years=years, S0=Y0, n_paths=n_paths)
 Y_GBM_paths = Yt.GBM_paths

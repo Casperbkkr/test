@@ -2,7 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Stoch:
-	def __init__(self, dt: float, mu: float, sigma: float, n_steps: int, *, years: int = 1, n_paths: int = 1, seed=None, S0: float = 100):
+	def __init__(self, dt: float,
+	                   mu: float,
+	                   sigma: float,
+	                   n_steps: int,
+	                   *, years: int = 1,
+	                   n_paths: int = 1,
+	                   seed=None,
+	                   S0: float = 100):
 		self.dt = dt
 		self.mu = mu
 		self.sigma = sigma
@@ -23,7 +30,6 @@ class Stoch:
 
 	def _Wiener(self, n_paths: int) -> np.array:
 		zeros = np.zeros((n_paths, 1))  # add zero as X0
-		a = np.concatenate((zeros, self.Random_walk_paths.cumsum(axis=1)), axis=1)
 		return np.concatenate((zeros, self.Random_walk_paths.cumsum(axis=1)), axis=1)  # return array with cumulative sum of random walk
 
 	def _GBM(self, dt: int, mu: float, sigma: float, *, n_paths: int = 1, seed=None, S0: float = 100) -> np.array:
