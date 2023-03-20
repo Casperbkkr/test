@@ -5,10 +5,6 @@ import matplotlib.pyplot as plt
 
 class Stoch:
 
-
-
-
-
 	def __init__(self, dt: float,
 	             mu: float,
 	             sigma: float,
@@ -29,6 +25,7 @@ class Stoch:
 		self.Random_walk_paths = self._Random_walk(self.dt, n_steps, n_paths=self.n_paths, seed=seed)
 		self.GBM_paths = self._GBM(self.dt, self.mu, self.sigma, n_paths=self.n_paths, S0=S0)
 		self.Wiener_paths = self._Wiener(self.n_paths)
+		self.RSSI = self._RSSI(self.GBM_paths)
 
 
 	def _Random_walk(self, dt: float, n_steps: int, *, n_paths: int = 1, seed=None) -> np.array:
@@ -44,6 +41,7 @@ class Stoch:
 		zeros = np.zeros((n_paths, 1))
 		# prepend the zeros array to cummulative sum of the random walk to get the Wiener paths
 		Wiener_paths = np.concatenate((zeros, self.Random_walk_paths.cumsum(axis=1)), axis=1)
+
 		return Wiener_paths
 
 
@@ -57,9 +55,17 @@ class Stoch:
 		expStplus = np.vstack([np.ones(n_paths), expSt])
 		# multiply by S(0) and take the cumulative product
 		gbm_paths = S0 * expStplus.cumprod(axis=0)
+
 		# return array with geometric brownian motion paths
 		return gbm_paths
 
+	def _RSSI(self, paths: np.array) -> np.array:
+		# calculate the increments between consecutive t's
+		dSt = np.diff(paths, axis=0)
+		# square the increments
+		dSt_sq = np.square(dSt)
+		# return cumulative sum of square of increments
+		return dSt_sq.cumsum(axis=0)
 
 	def show_paths(self) -> None:
 

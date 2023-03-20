@@ -6,22 +6,14 @@ from matplotlib import pyplot as plt
 
 
 def calc_RSSI(data) -> pd.DataFrame:
-
-	if type(data) != np.ndarray:
-		df_data = data
-		df_out = pd.DataFrame()
-		for column in df_data.columns:
-			dSt = np.diff(df_data[column].values)
-			dSt_sq = np.square(dSt)
-			RSSI = dSt_sq.cumsum()
-			df_out[column] = RSSI
-		return df_out
-
-	else:
-		dSt = np.diff(data, axis=0)
+	df_data = data
+	df_out = pd.DataFrame()
+	for column in df_data.columns:
+		dSt = np.diff(df_data[column].values)
 		dSt_sq = np.square(dSt)
 		RSSI = dSt_sq.cumsum()
-		return pd.DataFrame(RSSI)
+		df_out[column] = RSSI
+	return df_out
 
 
 # define drift constant
@@ -50,22 +42,19 @@ n_paths = 10
 GBM = Stoch(dt, mu, sigma, n_steps, n_paths=10, years=T, S0=S0)
 stock_paths = GBM.GBM_paths
 # show stock paths
-#GBM.show_paths()
+GBM.show_paths()
+
+
 
 # b)
 # calculate the running sum of square increments
-
-# calculate different between s(t) and s(t+1) for all t
-dSt = np.diff(stock_paths, axis=0)
-# calculate square of all delta s(t)
-dSt_sq = np.square(dSt)
-# calculate the cumulative sum
-RSSI = dSt_sq.cumsum(axis=0)
-RSSI = calc_RSSI(stock_paths)
+RSSI = GBM.RSSI
 
 #plot the RSSI
 plt.plot(RSSI)
 plt.show()
+
+
 
 # c)
 # Calculate the RSSI for stocks
