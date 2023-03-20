@@ -84,7 +84,7 @@ class Correlation:
 		maxima = [packer(i) for i in range(0, corr.shape[0])]
 		stock_names = [(col(i), row(i)) for i in range(0, corr.shape[0])]
 
-		# get minimum of minima and return
+		# get maximum of maxima and return
 		maximum = max(maxima)
 		max_stocks = stock_names[maxima.index(maximum)]
 
