@@ -5,15 +5,15 @@ from Classes.GBM import GBM
 class Milstein:
 
 	def __init__(self,
-	             dt,
-	             mu,
-	             sigma,
-	             n_steps,
-	             *, years=1,
-	             n_paths=1,
-	             seed=None,
-	             S0=1,
-	             Wiener_paths=None) -> None:
+	             dt:float,
+	             mu:float,
+	             sigma:float,
+	             n_steps:int,
+	             *, years:int = 1,
+	             n_paths:int = 1,
+	             seed:int or None =None,
+	             S0:float = 1.0,
+	             Wiener_paths:np.array =None) -> None:
 
 		if Wiener_paths == None:
 			self.Wiener_paths = GBM(dt, mu, sigma, n_steps, years=years, n_paths=n_paths, seed=seed, S0=S0).Wiener_paths

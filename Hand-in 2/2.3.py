@@ -1,9 +1,8 @@
 import numpy as np
 import itertools
+import pandas as pd
 import matplotlib.pyplot as plt
 from math import exp
-
-import pandas as pd
 
 from Classes.GBM import GBM
 from Classes.Milstein import Milstein
@@ -49,8 +48,8 @@ for ij in n_times_m:
 	df_Milstein.loc[n_steps, n_paths] = value(Milstein_paths, K)
 
 # write csv's with results
-df_GBM.to_csv("GBM_value.csv")
-df_Milstein.to_csv("Milstein_value.csv")
+df_GBM.to_csv("Data/GBM_value.csv")
+df_Milstein.to_csv("Data/Milstein_value.csv")
 
 
 
